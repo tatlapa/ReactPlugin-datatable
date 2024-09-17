@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RowTable from "./components/RowTable";
 import FieldTitle from "./components/FieldTitle";
 
@@ -15,6 +15,12 @@ const DataTable: React.FC<DataTableProps> = ({ titles, rows }) => {
   const [sortedRows, setSortedRows] = useState(rows);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [sortKey, setSortKey] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
+  useEffect(() => {
+    setSortedRows(rows);
+  }, [rows]);
+
   const isAvailable = rows.length === 0;
   const totalEntries = rows.length;
 
@@ -41,6 +47,17 @@ const DataTable: React.FC<DataTableProps> = ({ titles, rows }) => {
     setSortKey(key);
   };
 
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const searchValue = event.target.value.toLowerCase();
+    setSearchTerm(searchValue);
+  };
+
+  const filteredRows = sortedRows.filter((row) =>
+    titles.some((title) =>
+      String(row[title.key]).toLowerCase().includes(searchTerm)
+    )
+  );
+
   return (
     <div className="dt-flex dt-flex-col dt-gap-3">
       <div className="dt-flex dt-justify-between dt-items-center">
@@ -56,7 +73,13 @@ const DataTable: React.FC<DataTableProps> = ({ titles, rows }) => {
         </div>
         <div className="dt-flex dt-gap-2 dt-items-center">
           Search:
-          <input type="text" className="dt-border-2 dt-border-black dt-rounded-md dt-p-1" />
+          <input
+            type="text"
+            className="dt-border-2 dt-border-black dt-rounded-md dt-p-1"
+            value={searchTerm}
+            onChange={handleSearch}
+            placeholder="Search"
+          />
         </div>
       </div>
       <table>
@@ -89,8 +112,18 @@ const DataTable: React.FC<DataTableProps> = ({ titles, rows }) => {
                 No data available in table
               </td>
             </tr>
+          ) : filteredRows.length === 0 ? (
+            <tr role="row">
+              <td
+                valign="top"
+                colSpan={titles.length}
+                className="dt-text-center dt-bg-gray-100 dt-border-y dt-border-black dt-py-3"
+              >
+                No matching records found
+              </td>
+            </tr>
           ) : (
-            sortedRows.map((row, index) => (
+            filteredRows.map((row, index) => (
               <tr role="row" key={index}>
                 <RowTable
                   rows={Object.entries(row)
@@ -106,7 +139,9 @@ const DataTable: React.FC<DataTableProps> = ({ titles, rows }) => {
         <p>
           {isAvailable
             ? "Showing 0 to 0 of 0 entries"
-            : `Showing 1 to ${totalEntries} of ${totalEntries} entries`}
+            : filteredRows.length === 0
+            ? `Showing 0 to 0 of 0 entries (filtered from ${totalEntries} total entries)`
+            : `Showing 1 to ${filteredRows.length} of ${filteredRows.length} entries`}
         </p>
         <div className="dt-flex dt-gap-3 dt-items-center">
           <a>Previous</a>
