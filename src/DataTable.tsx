@@ -17,6 +17,7 @@ const DataTable: React.FC<DataTableProps> = ({ titles, rows }) => {
   const [sortKey, setSortKey] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
 
+  //for initial render
   useEffect(() => {
     setSortedRows(rows);
   }, [rows]);
