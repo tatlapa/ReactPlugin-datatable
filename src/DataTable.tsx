@@ -1,6 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import RowTable from "./components/RowTable";
 import FieldTitle from "./components/FieldTitle";
+import useFilteredRows from "./utils/useFilteredRows";
+import usePagination from "./utils/usePagination";
 
 interface DataTableProps {
   titles: Array<{
@@ -12,75 +14,27 @@ interface DataTableProps {
 }
 
 const DataTable: React.FC<DataTableProps> = ({ titles, rows }) => {
-  const [sortedRows, setSortedRows] = useState(rows);
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  const [sortKey, setSortKey] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState<string>("");
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
-  const [currentPage, setCurrentPage] = useState<number>(1);
 
-  //initial render
-  useEffect(() => {
-    setSortedRows(rows);
-  }, [rows]);
+  const {
+    filteredRows,
+    handleSort,
+    handleSearch,
+    sortKey,
+    sortOrder,
+    searchTerm,
+  } = useFilteredRows({ rows, titles });
+
+  const {
+    paginatedRows,
+    currentPage,
+    handleRowsPerPageChange,
+    handlePreviousPage,
+    handleNextPage,
+  } = usePagination(filteredRows, rowsPerPage);
 
   const isAvailable = rows.length === 0;
   const totalEntries = rows.length;
-
-  const handleSort = (key: string, type: "string" | "number" | "date") => {
-    const sorted = [...sortedRows].sort((a, b) => {
-      if (type === "string") {
-        return sortOrder === "asc"
-          ? a[key].localeCompare(b[key])
-          : b[key].localeCompare(a[key]);
-      } else if (type === "number") {
-        return sortOrder === "asc" ? a[key] - b[key] : b[key] - a[key];
-      } else if (type === "date") {
-        const dateA = new Date(a[key]);
-        const dateB = new Date(b[key]);
-        return sortOrder === "asc"
-          ? dateA.getTime() - dateB.getTime()
-          : dateB.getTime() - dateA.getTime();
-      }
-      return 0;
-    });
-
-    setSortedRows(sorted);
-    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    setSortKey(key);
-  };
-
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const searchValue = event.target.value.toLowerCase();
-    setSearchTerm(searchValue);
-  };
-
-  const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setRowsPerPage(parseInt(event.target.value));
-    setCurrentPage(1); // Reset to first page when rows per page changes
-  };
-
-  const handlePreviousPage = () => {
-    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
-  };
-
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) => {
-      const maxPage = Math.ceil(filteredRows.length / rowsPerPage);
-      return Math.min(prevPage + 1, maxPage);
-    });
-  };
-
-  const filteredRows = sortedRows.filter((row) =>
-    titles.some((title) =>
-      String(row[title.key]).toLowerCase().includes(searchTerm)
-    )
-  );
-
-  const paginatedRows = filteredRows.slice(
-    (currentPage - 1) * rowsPerPage,
-    currentPage * rowsPerPage
-  );
 
   return (
     <div className="dt-flex dt-flex-col dt-gap-3">
@@ -90,7 +44,10 @@ const DataTable: React.FC<DataTableProps> = ({ titles, rows }) => {
           <select
             className="dt-mx-1 dt-border-2 dt-border-black dt-rounded-md"
             value={rowsPerPage}
-            onChange={handleRowsPerPageChange}
+            onChange={(e) => {
+              setRowsPerPage(parseInt(e.target.value));
+              handleRowsPerPageChange(e);
+            }}
           >
             <option value={10}>10</option>
             <option value={25}>25</option>
