@@ -1,4 +1,4 @@
-import "./style.css";
+import "./index.css";
 
 export { default as DataTable } from './DataTable';
 export { default as FieldTitle } from './components/FieldTitle';

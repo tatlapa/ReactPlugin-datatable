@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import RowTable from "./components/RowTable";
 import FieldTitle from "./components/FieldTitle";
+import "./index.css";
 
 interface DataTableProps {
   titles: Array<{
