@@ -1,6 +1,6 @@
 {
   "name": "@tatlapa/react-datatable-plugin",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "type": "module",
   "main": "./dist/DataTable.umd.js",
   "typings": "dist/index.d.ts",
