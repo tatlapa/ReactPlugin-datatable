@@ -16,6 +16,8 @@ const DataTable: React.FC<DataTableProps> = ({ titles, rows }) => {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [sortKey, setSortKey] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   //initial render
   useEffect(() => {
@@ -53,10 +55,31 @@ const DataTable: React.FC<DataTableProps> = ({ titles, rows }) => {
     setSearchTerm(searchValue);
   };
 
+  const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setRowsPerPage(parseInt(event.target.value));
+    setCurrentPage(1); // Reset to first page when rows per page changes
+  };
+
+  const handlePreviousPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => {
+      const maxPage = Math.ceil(filteredRows.length / rowsPerPage);
+      return Math.min(prevPage + 1, maxPage);
+    });
+  };
+
   const filteredRows = sortedRows.filter((row) =>
     titles.some((title) =>
       String(row[title.key]).toLowerCase().includes(searchTerm)
     )
+  );
+
+  const paginatedRows = filteredRows.slice(
+    (currentPage - 1) * rowsPerPage,
+    currentPage * rowsPerPage
   );
 
   return (
@@ -64,11 +87,15 @@ const DataTable: React.FC<DataTableProps> = ({ titles, rows }) => {
       <div className="dt-flex dt-justify-between dt-items-center">
         <div className="dt-flex dt-items-center">
           Show
-          <select className="dt-mx-1 dt-border-2 dt-border-black dt-rounded-md">
-            <option>10</option>
-            <option>25</option>
-            <option>50</option>
-            <option>100</option>
+          <select
+            className="dt-mx-1 dt-border-2 dt-border-black dt-rounded-md"
+            value={rowsPerPage}
+            onChange={handleRowsPerPageChange}
+          >
+            <option value={10}>10</option>
+            <option value={25}>25</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
           </select>
           entries
         </div>
@@ -124,7 +151,7 @@ const DataTable: React.FC<DataTableProps> = ({ titles, rows }) => {
               </td>
             </tr>
           ) : (
-            filteredRows.map((row, index) => (
+            paginatedRows.map((row, index) => (
               <tr role="row" key={index}>
                 <RowTable
                   rows={Object.entries(row)
@@ -142,14 +169,20 @@ const DataTable: React.FC<DataTableProps> = ({ titles, rows }) => {
             ? "Showing 0 to 0 of 0 entries"
             : filteredRows.length === 0
             ? `Showing 0 to 0 of 0 entries (filtered from ${totalEntries} total entries)`
-            : `Showing 1 to ${filteredRows.length} of ${filteredRows.length} entries`}
+            : `Showing ${(currentPage - 1) * rowsPerPage + 1} to ${
+                Math.min(currentPage * rowsPerPage, filteredRows.length)
+              } of ${filteredRows.length} entries`}
         </p>
         <div className="dt-flex dt-gap-3 dt-items-center">
-          <a>Previous</a>
+          <a onClick={handlePreviousPage} className="dt-cursor-pointer">
+            Previous
+          </a>
           <span className="dt-bg-gray-100 dt-py-2 dt-px-4 dt-border-2 dt-rounded-sm">
-            <a>1</a>
+            <a>{currentPage}</a>
           </span>
-          <a>Next</a>
+          <a onClick={handleNextPage} className="dt-cursor-pointer">
+            Next
+          </a>
         </div>
       </div>
     </div>
