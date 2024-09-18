@@ -3,7 +3,7 @@ import { useState } from "react";
 const usePagination = (filteredRows: Array<{ [key: string]: any }>, rowsPerPage: number) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleRowsPerPageChange = (_event: React.ChangeEvent<HTMLSelectElement>) => {
     setCurrentPage(1);
   };
 
