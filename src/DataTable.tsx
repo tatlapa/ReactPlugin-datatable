@@ -10,9 +10,15 @@ interface DataTableProps {
     key: string;
     type: "string" | "number" | "date";
   }>;
-  rows: Array<{ [key: string]: any }>;
+  rows: Array<{ [key: string]: string | number | Date }>;
 }
 
+/**
+ * DataTable component to display and manage a table with sorting, searching, and pagination.
+ * 
+ * @param {DataTableProps} props - The properties for the DataTable component.
+ * @returns {JSX.Element} The rendered DataTable component.
+ */
 const DataTable: React.FC<DataTableProps> = ({ titles, rows }) => {
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
 

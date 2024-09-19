@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 interface FilteredRowsProps {
-  rows: Array<{ [key: string]: any }>;
+  rows: Array<{ [key: string]: string | number | Date }>;
   titles: Array<{
     title: string;
     key: string;
@@ -9,6 +9,12 @@ interface FilteredRowsProps {
   }>;
 }
 
+/**
+ * Custom hook to filter and sort rows based on search term and sort order.
+ * 
+ * @param {FilteredRowsProps} props - The properties for filtering and sorting rows.
+ * @returns {Object} The filtered rows and handlers for sorting and searching.
+ */
 const useFilteredRows = ({ rows, titles }: FilteredRowsProps) => {
   const [sortedRows, setSortedRows] = useState(rows);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -19,14 +25,20 @@ const useFilteredRows = ({ rows, titles }: FilteredRowsProps) => {
     setSortedRows(rows);
   }, [rows]);
 
+  /**
+   * Handles sorting of rows based on the specified key and type.
+   * 
+   * @param {string} key - The key to sort by.
+   * @param {"string" | "number" | "date"} type - The type of the key.
+   */
   const handleSort = (key: string, type: "string" | "number" | "date") => {
     const sorted = [...sortedRows].sort((a, b) => {
       if (type === "string") {
         return sortOrder === "asc"
-          ? a[key].localeCompare(b[key])
-          : b[key].localeCompare(a[key]);
+          ? (a[key] as string).localeCompare(b[key] as string)
+          : (b[key] as string).localeCompare(a[key] as string);
       } else if (type === "number") {
-        return sortOrder === "asc" ? a[key] - b[key] : b[key] - a[key];
+        return sortOrder === "asc" ? Number(a[key]) - Number(b[key]) : Number(b[key]) - Number(a[key]);
       } else if (type === "date") {
         const dateA = new Date(a[key]);
         const dateB = new Date(b[key]);
@@ -42,6 +54,11 @@ const useFilteredRows = ({ rows, titles }: FilteredRowsProps) => {
     setSortKey(key);
   };
 
+  /**
+   * Handles search input change and filters rows based on the search term.
+   * 
+   * @param {React.ChangeEvent<HTMLInputElement>} event - The search input change event.
+   */
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value.toLowerCase();
     setSearchTerm(searchValue);
