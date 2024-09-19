@@ -1,5 +1,8 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 
+/**
+ * Props for the FieldTitle component.
+ */
 interface FieldTitleProps {
   title: string;
   sortKey: string;
@@ -7,6 +10,12 @@ interface FieldTitleProps {
   sortOrder: "asc" | "desc";
 }
 
+/**
+ * FieldTitle component to display the title of a field with sorting indicators.
+ * 
+ * @param {FieldTitleProps} props - The properties for the FieldTitle component.
+ * @returns {JSX.Element} The rendered FieldTitle component.
+ */
 const FieldTitle: React.FC<FieldTitleProps> = ({
   title,
   sortKey,

@@ -4,6 +4,9 @@ import FieldTitle from "./components/FieldTitle";
 import useFilteredRows from "./utils/useFilteredRows";
 import usePagination from "./utils/usePagination";
 
+/**
+ * Props for the DataTable component.
+ */
 interface DataTableProps {
   titles: Array<{
     title: string;
@@ -117,9 +120,7 @@ const DataTable: React.FC<DataTableProps> = ({ titles, rows }) => {
             paginatedRows.map((row, index) => (
               <tr role="row" key={index}>
                 <RowTable
-                  rows={Object.entries(row)
-                    .filter(([key]) => key !== "id")
-                    .map(([, value]) => value)}
+                  rows={[row]}
                 />
               </tr>
             ))

@@ -1,12 +1,21 @@
+/**
+ * Props for the RowTable component.
+ */
 interface RowTableProps {
-  rows: any[];
+  rows: Array<{ [key: string]: string | number | Date }>;
 }
 
 const RowTable: React.FC<RowTableProps> = ({ rows }) => {
   return (
     <>
       {rows.map((row, index) => (
-        <td key={index} className="dt-px-4 dt-py-2">{row}</td>
+        <tr key={index}>
+          {Object.entries(row).map(([key, value]) => (
+            <td key={key} className="dt-px-4 dt-py-2">
+              {value instanceof Date ? value.toLocaleDateString() : value}
+            </td>
+          ))}
+        </tr>
       ))}
     </>
   );

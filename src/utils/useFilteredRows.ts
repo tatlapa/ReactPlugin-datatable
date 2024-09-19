@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 
+/**
+ * Props for the useFilteredRows hook.
+ */
 interface FilteredRowsProps {
   rows: Array<{ [key: string]: string | number | Date }>;
   titles: Array<{
