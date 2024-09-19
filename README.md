@@ -19,8 +19,7 @@ import { DataTable } from "@tatlapa/react-datatable-plugin";
 Use it as a standard React component:
 
 ```javascript
-  DataTable titles={titles} rows={rows} />
-
+<DataTable titles={titles} rows={rows} />
 ```
 
 ## Usage
@@ -29,8 +28,16 @@ Use it as a standard React component:
 
 The `DataTable` component can accept up to 2 arguments:
 
-- **titles**:
-- **rows**:
+- **titles**: An array of objects defining the table columns. Each object should have the following properties:
+
+  - **title**: The display name of the column.
+  - **key**: The key corresponding to the data field.
+  - **type**: The type of data in the column (`"string"`, `"number"`, or `"date"`).
+
+- **rows**: An array of objects representing the table rows. Each object should have keys corresponding to the column keys defined in `titles`. For example:
+  - If a column key is `firstName`, the row object should have a `firstName` property with a string value.
+  - If a column key is `startDate`, the row object should have a `startDate` property with a date value.
+  - If a column key is `zip`, the row object should have a `zip` property with a number value.
 
 ### Functionality
 
