@@ -1,0 +1,16 @@
+{
+    "entryPoints": [
+      "src/index.ts",
+      "src/DataTable.tsx",
+      "src/components/FieldTitle.tsx",
+      "src/components/RowTable.tsx",
+      "src/utils/useFilteredRows.ts",
+      "src/utils/usePagination.ts"
+    ],
+    "out": "docs",
+    "excludeExternals": true,
+    "excludePrivate": true,
+    "excludeProtected": true
+  }
+
+  

@@ -1,50 +1,82 @@
-# React + TypeScript + Vite
+# react-paginated-table
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+`@tatlapa/react-datatable-plugin` is an npm package designed to seamlessly integrate paginated, filtered, and sortable tables into your web applications. Built with React, TypeScript, and TailwindCSS, it offers a robust solution for table management.
 
-Currently, two official plugins are available:
+## Installation
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Install the package using npm:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+npm i @tatlapa/react-datatable-plugin
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Import the table component into your project:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+```javascript
+import { DataTable } from "@tatlapa/react-datatable-plugin";
+```
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
+Use it as a standard React component:
+
+```javascript
+  DataTable titles={titles} rows={rows} />
+
+```
+
+## Usage
+
+### Arguments
+
+The `DataTable` component can accept up to 2 arguments:
+
+- **titles**:
+- **rows**:
+
+### Functionality
+
+See the example below for more details.
+
+## Example
+
+An example with the following parameters:
+
+1. **titles**
+
+```javascript
+const titles = [
+  { title: "First Name", key: "firstName", type: "string" },
+  { title: "Last Name", key: "lastName", type: "string" },
+  { title: "Start Date", key: "startDate", type: "date" },
+  { title: "Department", key: "department", type: "string" },
+  { title: "Birth Date", key: "birthDate", type: "date" },
+  { title: "Street", key: "street", type: "string" },
+  { title: "City", key: "city", type: "string" },
+  { title: "State", key: "state", type: "string" },
+  { title: "ZipCode", key: "zip", type: "number" },
+];
+```
+
+2. **rows**
+
+```javascript
+const rows = [
+  {
+    firstName: "Alice",
+    lastName: "Doe",
+    startDate: "1/15/2023",
+    department: "Marketing",
+    birthDate: "5/22/1990",
+    street: "123 Main St",
+    city: "Springfield",
+    state: "IL",
+    zip: 62704,
   },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+];
+```
+
+3. **Component**
+
+```javascript
+  DataTable titles={titles} rows={rows} />
+
 ```
