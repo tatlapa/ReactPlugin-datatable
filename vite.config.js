@@ -14,7 +14,7 @@ export default defineConfig({
         lib: {
             entry: path.resolve(__dirname, "src/index.ts"),
             name: "datatable",
-            formats: ["es", "umd"],
+            formats: ["es", "umd", "cjs"],
             fileName: function (format) { return "datatable.".concat(format, ".js"); },
         },
         rollupOptions: {

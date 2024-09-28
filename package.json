@@ -2,13 +2,13 @@
   "name": "@tatlapa/react-datatable-plugin",
   "version": "1.0.22",
   "type": "module",
-  "main": "./dist/DataTable.umd.js",
+  "main": "./dist/datatable.umd.js",
   "typings": "dist/index.d.ts",
-  "module": "dist/DataTable.es.js",
+  "module": "dist/datatable.es.js",
   "exports": {
     ".": {
-      "import": "./dist/DataTable.es.js",
-      "require": "./dist/DataTable.umd.js",
+      "import": "./dist/datatable.es.js",
+      "require": "./dist/datatable.umd.js",
       "types": "./dist/index.d.ts"
     },
     "./style.css": "./dist/style.css"
