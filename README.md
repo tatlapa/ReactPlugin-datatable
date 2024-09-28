@@ -14,6 +14,7 @@ Import the table component into your project:
 
 ```javascript
 import { DataTable } from "@tatlapa/react-datatable-plugin";
+import "/node_modules/@tatlapa/react-datatable-plugin/dist/style.css";
 ```
 
 Use it as a standard React component:
