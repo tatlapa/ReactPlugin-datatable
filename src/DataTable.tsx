@@ -18,7 +18,7 @@ interface DataTableProps {
 
 /**
  * DataTable component to display and manage a table with sorting, searching, and pagination.
- * 
+ *
  * @param {DataTableProps} props - The properties for the DataTable component.
  * @returns {JSX.Element} The rendered DataTable component.
  */
@@ -49,8 +49,9 @@ const DataTable: React.FC<DataTableProps> = ({ titles, rows }) => {
     <div className="dt-flex dt-flex-col dt-gap-3">
       <div className="dt-flex dt-justify-between dt-items-center">
         <div className="dt-flex dt-items-center">
-          Show
+          <label htmlFor="entries">Show</label>
           <select
+            id="entries"
             className="dt-mx-1 dt-border-2 dt-border-black dt-rounded-md"
             value={rowsPerPage}
             onChange={(e) => {
@@ -63,8 +64,9 @@ const DataTable: React.FC<DataTableProps> = ({ titles, rows }) => {
             <option value={50}>50</option>
             <option value={100}>100</option>
           </select>
-          entries
+          <span>entries</span>
         </div>
+
         <div className="dt-flex dt-gap-2 dt-items-center">
           Search:
           <input
@@ -119,9 +121,7 @@ const DataTable: React.FC<DataTableProps> = ({ titles, rows }) => {
           ) : (
             paginatedRows.map((row, index) => (
               <tr role="row" key={index}>
-                <RowTable
-                  rows={[row]}
-                />
+                <RowTable rows={[row]} />
               </tr>
             ))
           )}
@@ -133,9 +133,10 @@ const DataTable: React.FC<DataTableProps> = ({ titles, rows }) => {
             ? "Showing 0 to 0 of 0 entries"
             : filteredRows.length === 0
             ? `Showing 0 to 0 of 0 entries (filtered from ${totalEntries} total entries)`
-            : `Showing ${(currentPage - 1) * rowsPerPage + 1} to ${
-                Math.min(currentPage * rowsPerPage, filteredRows.length)
-              } of ${filteredRows.length} entries`}
+            : `Showing ${(currentPage - 1) * rowsPerPage + 1} to ${Math.min(
+                currentPage * rowsPerPage,
+                filteredRows.length
+              )} of ${filteredRows.length} entries`}
         </p>
         <div className="dt-flex dt-gap-3 dt-items-center">
           <a onClick={handlePreviousPage} className="dt-cursor-pointer">
