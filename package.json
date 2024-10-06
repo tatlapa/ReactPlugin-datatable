@@ -11,7 +11,7 @@
       "require": "./dist/datatable.umd.js",
       "types": "./dist/index.d.ts"
     },
-    "./style.css": "./dist/index.css"
+    "./style.css": "./dist/style.css"
   },
   "typesVersions": {
     "*": {
